@@ -9,7 +9,7 @@
 /**
  * Implementation of hook_help().
  */
-function parser_ical_help($path, $arg) {
+function parser_ical_help($path) {
   switch ($path) {
     case 'admin/modules#description':
       return t('Provide a common iCal parser for FeedAPI-compatible modules.');
