@@ -1,0 +1,8 @@
+; $Id$
+name = iCal parser
+description = Provides an iCal parser for FeedAPI modules. Requires PHP5.
+package = FeedAPI Add On
+dependencies[] = feedapi
+dependencies[] = date_api
+core = 6.x
+php = 5.0
