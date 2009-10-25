@@ -1,5 +1,8 @@
 ; $Id$
-name = "iCal parser"
-description = "Provides an iCal parser for FeedAPI modules. Requires PHP5."
-package = FeedAPI Add On
-dependencies = feedapi date_api
+name = iCal parser
+description = Provides an iCal parser for Feeds modules. Requires PHP5.
+package = Feeds Plugin
+dependencies[] = feeds
+dependencies[] = date_api
+core = 6.x
+php = 5.0
