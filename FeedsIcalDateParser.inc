@@ -9,17 +9,13 @@
 class FeedsIcalDateParser extends FeedsParser {
 
   /**
-   * Parses a raw string and returns a Feed object from it.
+   * Parse content fetched by fetcher.
    */
-  public function parse(FeedsFetcherResult $fetcherResult, FeedsSource $source) {
-    if ($fetcherResult->type == 'text/filepath') {
-      $string = file_get_contents($fetcherResult->value);
-    }
-    else {
-      $string = $fetcherResult->value;
-    }
+  public function parse(FeedsImportBatch $batch, FeedsSource $source) {
     module_load_include('inc', 'parser_ical', 'parser_ical.dateapi');
-    return new FeedsParserResult(_parser_ical_parse($string), 'syndication');
+    $result = _parser_ical_parse($batch->getRaw());
+    $batch->setTitle($result['title']);
+    $batch->setItems($result['items']);
   }
 
   /**
