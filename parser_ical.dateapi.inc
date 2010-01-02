@@ -55,12 +55,13 @@ function _parser_ical_parse($feed_content) {
       $date_info = array('DTSTART', 'DTEND', 'RDATE', 'EXDATE', 'DURATION', 'RRULE');
       foreach ($date_info as $key) {
         if (isset($event[$key])) {
-          $item['date']['DATE'][$key] = $event[$key];
+          $item['ical_date']['DATE'][$key] = $event[$key];
           unset($event[$key]);
         }
       }
+      // catch-all ... could be better
       foreach ($event as $key => $value) {
-        $item['date'][$key] = $value;
+        $item['ical_date'][$key] = $value;
       }
       $parsed_source['items'][] = $item;
     }
