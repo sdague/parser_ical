@@ -3,9 +3,9 @@
 
 /**
  * @file
- * Parse the incoming URL with date_api_ical 
- * 
- * TODO Figure out how to incorporate VVENUE information into the parser.  
+ * Parse the incoming URL with date_api_ical
+ *
+ * TODO Figure out how to incorporate VVENUE information into the parser.
  */
 
 /**
