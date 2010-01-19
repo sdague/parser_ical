@@ -51,7 +51,7 @@ function _parser_ical_parse($feed_content) {
 
       $item['guid'] = isset($event['UID']) ? $event['UID'] : ''; // intention
       $item['tags'] = isset($event['CATEGORIES']) ? explode(',', $event['CATEGORIES']) : array();
-      $item['ical_date'] = new FeedsIcalDateTimeElement($event);
+      $item['ical_date'] = new ParserIcalDateTimeElement($event);
       $parsed_source['items'][] = $item;
     }
   }

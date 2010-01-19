@@ -2,11 +2,12 @@
 // $Id$
 
 /**
- * Overridden version of FeedsDateTimeElement that supports iCal specific parsing and repetition.
+ * Overridden version of FeedsDateTimeElement that supports iCal specific
+ * parsing and repetition.
  *
  * @todo repeating date storage not iCal specific, could be moved to base class.
  */
-class FeedsIcalDateTimeElement extends FeedsDateTimeElement {
+class ParserIcalDateTimeElement extends FeedsDateTimeElement {
   public $repeat_vals = NULL;
 
   /**
@@ -47,7 +48,8 @@ class FeedsIcalDateTimeElement extends FeedsDateTimeElement {
        * Make sure we don't end up with thousands of values with RRULES
        * that have no UNTIL or COUNT.
        * @todo could be adjusted or made configurable later.
-       * NOTE: This is not properly timezone converted; that's the least of its problems.
+       * NOTE: This is not properly timezone converted; that's the least of its
+       * problems.
        */
       $max = date_now();
       $max_repeats = 52;
@@ -63,7 +65,8 @@ class FeedsIcalDateTimeElement extends FeedsDateTimeElement {
       elseif (empty($form_values['UNTIL'])) {
         $form_values['UNTIL'] = array('datetime' => $until, 'tz' => 'UTC');
       }
-      // Save these in the form_values format, which date can convert to an rrule with date_api_ical_build_rrule()
+      // Save these in the form_values format, which date can convert to an
+      // rrule with date_api_ical_build_rrule()
       $this->repeat_vals = $form_values;
     }
   }
@@ -100,7 +103,7 @@ class FeedsIcalDateTimeElement extends FeedsDateTimeElement {
  *
  * Parses iCal feeds using the iCal parser included with the date module.
  */
-class FeedsIcalDateParser extends FeedsParser {
+class ParserIcalFeedsParser extends FeedsParser {
 
   /**
    * Parse content fetched by fetcher.
