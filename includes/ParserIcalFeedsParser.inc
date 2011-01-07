@@ -37,8 +37,6 @@ class ParserIcalDateTimeElement extends FeedsDateTimeElement {
     }
 
     if (array_key_exists('RRULE', $feed_element) && !empty($feed_element['RRULE']) && module_exists('date_repeat')) {
-      include_once('./'. drupal_get_path('module', 'date_repeat') .'/date_repeat_calc.inc');
-      include_once('./'. drupal_get_path('module', 'date') .'/date_repeat.inc');
       // Explode the RRULE into parts so we can analyze it.
       $rrule = $feed_element['RRULE']['DATA'] . (!empty($feed_element['EXDATE']) ? "/n". $feed_element['EXDATE'] : "");
       // In current API the first variable, $field, is unused--may change?
@@ -91,10 +89,14 @@ class ParserIcalDateTimeElement extends FeedsDateTimeElement {
     if (empty($this->repeat_vals)) {
       return;
     }
-    $field = content_fields($field_name);
-    $node_field = $node->{$field_name}[0];
-    $values = date_repeat_build_dates(NULL, $this->repeat_vals, $field, $node_field);
-    $node->$field_name = $values;
+    if (module_exists('date') && module_exists('date_repeat')) {
+      include_once('./'. drupal_get_path('module', 'date_repeat') .'/date_repeat_calc.inc');
+      include_once('./'. drupal_get_path('module', 'date') .'/date_repeat.inc');
+      $field = content_fields($field_name);
+      $node_field = $node->{$field_name}[0];
+      $values = date_repeat_build_dates(NULL, $this->repeat_vals, $field, $node_field);
+      $node->$field_name = $values;
+    }
   }
 }
 
@@ -151,9 +153,13 @@ class ParserIcalFeedsParser extends FeedsParser {
         'description' => t('An array of categories that have been assigned to the feed item.'),
       ),
       'ical_date' => array(
-         'name' => t('iCal Date'),
-         'description' => t('iCal date associated with item as an array.'),
+        'name' => t('iCal Date'),
+        'description' => t('iCal date associated with item as an array.'),
       ),
-    );
+      'ical_location' => array(
+        'name' => t('iCal location string'),
+        'description' => t('The location string associated with an item.'),
+      ),
+    ) + parent::getMappingSources();
   }
 }

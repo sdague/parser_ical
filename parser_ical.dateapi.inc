@@ -41,17 +41,29 @@ function _parser_ical_parse($feed_content) {
       $item['url'] = isset($event['URL']) ? $event['URL'] : '';
 
       // Make sure a valid timestamp is created.
-      $item['timestamp'] = time();
       if (isset($event['DTSTAMP'])) {
         $date = date_ical_date($event['DTSTAMP']);
         if (date_is_valid($date, DATE_OBJECT)) {
           $item['timestamp'] = date_format($date, 'U');
         }
       }
+      elseif (isset($event['DTSTART'])) {
+        // a majority of feeds do have a DTSTART and it's sensible enough for a node date
+        // although it maybe in the future...
+        $date = date_ical_date($event['DTSTART']);
+        if (date_is_valid($date, DATE_OBJECT)) {
+          $item['timestamp'] = date_format($date, 'U');
+        }
+      }
+      else {
+        // now falling back but it will cause constant updates
+        $item['timestamp'] = FEEDS_REQUEST_TIME;
+      }
 
       $item['guid'] = isset($event['UID']) ? $event['UID'] : ''; // intention
       $item['tags'] = isset($event['CATEGORIES']) ? explode(',', $event['CATEGORIES']) : array();
       $item['ical_date'] = new ParserIcalDateTimeElement($event);
+      $item['ical_location'] = $event['LOCATION'];
       $parsed_source['items'][] = $item;
     }
   }
