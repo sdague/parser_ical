@@ -43,17 +43,20 @@ function _parser_ical_parse($feed_content) {
       // Make sure a valid timestamp is created.
       if (isset($event['DTSTAMP'])) {
         $date = date_ical_date($event['DTSTAMP']);
-        if (date_is_valid($date, DATE_OBJECT)) {
+        # TODO no longer needed? what's the output of date_ical_date?
+        # if needed what replaces it?
+        # if (date_is_valid($date, DATE_OBJECT)) {
           $item['timestamp'] = date_format($date, 'U');
-        }
+        # }
       }
       elseif (isset($event['DTSTART'])) {
         // a majority of feeds do have a DTSTART and it's sensible enough for a node date
         // although it maybe in the future...
         $date = date_ical_date($event['DTSTART']);
-        if (date_is_valid($date, DATE_OBJECT)) {
+        # TODO See above
+        # if (date_is_valid($date, DATE_OBJECT)) {
           $item['timestamp'] = date_format($date, 'U');
-        }
+        # }
       }
       else {
         // now falling back but it will cause constant updates

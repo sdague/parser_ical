@@ -166,11 +166,11 @@ class ParserIcalFeedsDateTestCase extends ParserIcalFeedsTestCase {
       array('title' => 'Multiple whole days', 'field' => '2009-10-05 00:00', 'site' => '2009-10-05 00:00', 'field2' => '2009-10-08 00:00', 'site2' => '2009-10-08 00:00', 'timezone' => 'Pacific/Apia'),
       //*/
     );
-    foreach ($data as $d) {
-      $n = node_load(array('title' => $d['title']), NULL, TRUE);
-      $this->drupalGet('node/' . $n->nid . '/edit');
+    for ($i = 1; $i <= count($data); $i++) {
+      $this->drupalGet("node/$i/edit");
       $this->pass('Checking : '. $d['title']);
-      $this->assertCCKFieldValue('datefield', $d['field']);
+      $this->assertNodeFieldValue('datefield', $d['field']);
+      # ok how does this work then
       $this->assertCCKFieldValue('datesite', $d['site']);
       $this->assertCCKFieldValue2('datefield', $d['field2']);
       $this->assertCCKFieldValue2('datesite', $d['site2']);
@@ -235,10 +235,9 @@ class ParserIcalFeedsLocationTestCase extends ParserIcalFeedsTestCase {
       array('title' => 'Zvent location', 'location' => "Lupo's Heartbreak Hotel  79 Washington St. Providence RI United States"),
       //*/
     );
-    foreach ($data as $d) {
-      $n = node_load(array('title' => $d['title']), NULL, TRUE);
-      $this->drupalGet('node/' . $n->nid . '/edit');
-      $this->assertCCKFieldValue('location', $d['location']);
+    for ($i = 1; $i <= count($data); $i++) {
+      $this->drupalGet("node/$i/edit");
+      $this->assertNodeFieldValue('location', $d['location']);
     }
   }
 }

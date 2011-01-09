@@ -90,12 +90,18 @@ class ParserIcalDateTimeElement extends FeedsDateTimeElement {
       return;
     }
     if (module_exists('date') && module_exists('date_repeat')) {
-      include_once('./'. drupal_get_path('module', 'date_repeat') .'/date_repeat_calc.inc');
-      include_once('./'. drupal_get_path('module', 'date') .'/date_repeat.inc');
-      $field = content_fields($field_name);
-      $node_field = $node->{$field_name}[0];
+      require_once(DRUPAL_ROOT . '/' . drupal_get_path('module', 'date_repeat') .'/date_repeat_calc.inc');
+      require_once(DRUPAL_ROOT . '/' . drupal_get_path('module', 'date') .'/date_repeat.inc');
+      // @TODO this really really needs review!
+      // NB there is no date repeating UI at the moment.
+      // merge!?
+      $field = field_info_field($field_name);
+      // is it always 'und' why is it 'und'?
+      $node_field = $node->{$field_name}['und'][0];
       $values = date_repeat_build_dates(NULL, $this->repeat_vals, $field, $node_field);
-      $node->$field_name = $values;
+      foreach ($values as $value) {
+        $node->{$field_name}['und'][] = $value;
+      }
     }
   }
 }
@@ -110,12 +116,16 @@ class ParserIcalFeedsParser extends FeedsParser {
   /**
    * Parse content fetched by fetcher.
    */
-  public function parse(FeedsImportBatch $batch, FeedsSource $source) {
+  public function parse(FeedsSource $source, FeedsFetcherResult $fetcher_result) {
     module_load_include('inc', 'parser_ical', 'parser_ical.dateapi');
-    $result = _parser_ical_parse($batch->getRaw());
-    $batch->setTitle($result['title']);
-    $batch->setItems($result['items']);
-    // also available description, calscale, timezone
+    $parsed_output = _parser_ical_parse($fetcher_result->getRaw());
+    // Construct the standard form of the parsed feed
+    $result = new FeedsParserResult();
+    $result->title = $parsed_output['title'];
+    $result->description = $parsed_output['description'];
+    $result->items = $parsed_output['items'];
+    // also available calscale, timezone
+    return $result;
   }
 
   /**
