@@ -1,4 +1,3 @@
-; $Id$
 name = iCal parser
 description = Provides an iCal parser for Feeds modules. Requires PHP5.
 package = Feeds Plugin

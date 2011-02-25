@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * Overridden version of FeedsDateTimeElement that supports iCal specific
