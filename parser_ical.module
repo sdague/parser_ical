@@ -20,17 +20,17 @@ function parser_ical_ctools_plugin_api($owner, $api) {
  * Implementation of ctools plugin for feeds hook_feeds_plugins().
  */
 function parser_ical_feeds_plugins() {
-  $path = drupal_get_path('module', 'parser_ical');
+  $path = drupal_get_path('module', 'parser_ical') . '/includes';
   $info = array();
-  $info['ParserIcalFeedsParser'] = array(
-    'name' => 'iCal dateapi parser',
-    'description' => 'Parse iCal feeds.',
-    'help' => 'Parse feeds in the iCal format using the dateapi.',
+  $info['ParserIcalCreator'] = array(
+    'name' => 'iCalCreator parser',
+    'description' => 'Use iCalCreator to parse iCal feeds.',
+    'help' => 'Parse feeds in the iCal format.',
     'handler' => array(
       'parent' => 'FeedsParser',
-      'class' => 'ParserIcalFeedsParser',
-      'file' => 'ParserIcalFeedsParser.inc',
-      'path' => $path . '/includes',
+      'class' => 'ParserIcalCreator',
+      'file' => 'ParserIcalCreator.inc',
+      'path' => $path,
     ),
   );
 
@@ -47,6 +47,9 @@ function parser_ical_help($path, $arg) {
   }
 }
 
+/**
+ * Implementation of hook_enable().
+ */
 function parser_ical_enable() {
   cache_clear_all('plugins:feeds:plugins', 'cache');
 }
