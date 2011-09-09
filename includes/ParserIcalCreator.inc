@@ -4,7 +4,7 @@
  * @file
  *  Basic classes.
  */
-class ParserIcalCreator extends FeedsParser {
+class ParserIcalCreator extends ParserIcalFeeds {
   /**
    * Output sources this parser offers.
    *
@@ -13,7 +13,7 @@ class ParserIcalCreator extends FeedsParser {
    * @see ParserIcalCreator::getMappingSources().
    * @see ParserIcalCreator::getSourceElement().
    */
-  static public $sources = array(
+  static protected $sources = array(
     'summary' => array(
       'name' => 'Summary',
       'description' => 'A short summary or subject for the calendar component.',
@@ -101,42 +101,6 @@ class ParserIcalCreator extends FeedsParser {
     return $result;
   }
 
-  /**
-   * Implementation of FeedsParser::getMappingSources().
-   */
-  public function getMappingSources() {
-    // Quirky work around. 
-    // Want to have the sources as a property of the class,
-    // but can't declare them with t(). 
-    $sources = self::$sources;
-    foreach ($sources as $key => &$value) {
-      if ($key == 'name' || $key == 'description') {
-        $value = t($value);
-      }
-    }
-    // parent::getMappingSources() triggers target creation too.
-    return $sources + parent::getMappingSources();
-  } 
-
-  /**
-   * Override FeedsParser::getSourceElement().
-   */
-  public function getSourceElement(FeedsSource $source, FeedsParserResult $result, $property_key) {
-    // Allow parent method to handle any mappings based on the parent node.
-    if (substr($property_key, 0, 7) == 'parent:') {
-      return parent::getSourceElement($source, $result, $property_key);
-    }
-
-    // Otherwise retrieve the current ParserIcalCreatorComponent 
-    // from the ParserIcalResult
-    if ($item = $result->currentItem()) {
-      // and use listed handler to get source output
-      $handler = self::$sources[$property_key]['parser_ical_handler'];
-      $property = $item->getProperty($property_key);
-      return $this->$handler($property_key, $property, $item, $result, $source);
-    }
-  }
-
   /******
    * Source output formatters.
    * 
@@ -149,7 +113,9 @@ class ParserIcalCreator extends FeedsParser {
    * @todo is \n \N handling correct?
    */
   public function formatText($property_key, $property, ParserIcalComponentInterface $item, FeedsParserResult $result, FeedsSource $source) {
-    return $property['value'];
+    $text = $property['value'];
+    $text = str_replace(array("\\n", "\\N"), "\n", $text);
+    return $text;
   }
 
   /**
@@ -248,13 +214,6 @@ class ParserIcalResult extends FeedsParserResult {
   public $timezones;
 }
 
-interface ParserIcalComponentInterface {
-  public function getComponentType();
-  public function setComponentType($type);
-  public function setProperty($name, $value);
-  public function getProperty($name);
-}
-
 /**
  * A wrapper on iCalcreator component class.
  */
@@ -305,12 +264,3 @@ class ParserIcalCreatorComponent implements ParserIcalComponentInterface {
   }
 }
 
-/**
- * Generic ParserIcal exceptions.
- */
-class ParserIcalException extends Exception {}
-
-/**
- * ParserIcal failed to parse some part of iCal.
- */
-class ParserIcalParseException extends ParserIcalException {}

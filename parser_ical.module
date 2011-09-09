@@ -22,17 +22,38 @@ function parser_ical_ctools_plugin_api($owner, $api) {
 function parser_ical_feeds_plugins() {
   $path = drupal_get_path('module', 'parser_ical') . '/includes';
   $info = array();
+  $info['ParserIcalFeeds'] = array(
+    'hidden' => TRUE,
+    'handler' => array(
+      'parent' => 'FeedsParser',
+      'class' => 'ParserIcalFeeds',
+      'file' => 'ParserIcal.inc',
+      'path' => $path,
+    ),
+  );
   $info['ParserIcalCreator'] = array(
     'name' => 'iCalCreator parser',
     'description' => 'Use iCalCreator to parse iCal feeds.',
-    'help' => 'Parse feeds in the iCal format.',
+    'help' => 'Parse feeds in the iCal format using the iIcalCreator library.',
     'handler' => array(
-      'parent' => 'FeedsParser',
+      'parent' => 'ParserIcalFeeds',
       'class' => 'ParserIcalCreator',
       'file' => 'ParserIcalCreator.inc',
       'path' => $path,
     ),
   );
+  $info['ParserIcalDateModule'] = array(
+    'name' => 'Date API iCal parser',
+    'description' => 'Use date module api to parse iCal feeds.',
+    'help' => 'Parse feeds in the iCal format using api provided by the date module.',
+    'handler' => array(
+      'parent' => 'ParserIcalFeeds',
+      'class' => 'ParserIcalDateModule',
+      'file' => 'ParserIcalDate.inc',
+      'path' => $path,
+    ),
+  );
+  
 
   return $info;
 }
