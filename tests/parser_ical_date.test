@@ -30,19 +30,19 @@ class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
       'pidt_date' => array (
         'type' => 'date',
         'settings' => array(
-          'field[settings][enddate_get]' => true,
+          'field[settings][todate]' => 'optional',
         ),
       ),
       'pidt_datetime' => array (
         'type' => 'datetime',
         'settings' => array(
-          'field[settings][enddate_get]' => true,
+          'field[settings][todate]' => 'optional',
         ),
       ),
       'pidt_datestamp' => array (
         'type' => 'datestamp',
         'settings' => array(
-          'field[settings][enddate_get]' => true,
+          'field[settings][todate]' => 'optional',
         ),
       ),
     );
@@ -105,7 +105,7 @@ class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
       'pidt_site' => array (
         'type' => 'date',
         'settings' => array(
-          'field[settings][enddate_get]' => true,
+          'field[settings][todate]' => 'optional',
           'field[settings][tz_handling]' => 'site',
         ),
       ),
@@ -113,7 +113,7 @@ class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
       'pidt_date' => array (
         'type' => 'date',
         'settings' => array(
-          'field[settings][enddate_get]' => true,
+          'field[settings][todate]' => 'optional',
           'field[settings][tz_handling]' => 'date',
         ),
       ),
@@ -121,7 +121,7 @@ class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
       'pidt_user' => array (
         'type' => 'date',
         'settings' => array(
-          'field[settings][enddate_get]' => true,
+          'field[settings][todate]' => 'optional',
           'field[settings][tz_handling]' => 'user',
         ),
       ),
@@ -129,7 +129,7 @@ class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
       'pidt_utc' => array (
         'type' => 'date',
         'settings' => array(
-          'field[settings][enddate_get]' => true,
+          'field[settings][todate]' => 'optional',
           'field[settings][tz_handling]' => 'utc',
         ),
       ),
@@ -137,7 +137,7 @@ class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
       'pidt_none' => array (
         'type' => 'date',
         'settings' => array(
-          'field[settings][enddate_get]' => true,
+          'field[settings][todate]' => 'optional',
           'field[settings][tz_handling]' => 'none',
         ),
       ),
