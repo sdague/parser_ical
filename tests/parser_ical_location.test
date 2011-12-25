@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Test case for CCK ical date field text mapper.
+ */
+
+/**
+ * Common class for testing ical parsers link and guid mapping.
+ */
+abstract class ParserIcalLocationTestCase extends ParserIcalFeedsTestCase {
+  /**
+   * Set up the test.
+   *
+  public function setUp() {
+    // @todo additional location modules to test
+    parent::setUp();
+  }*/
+
+  /**
+   * Basic test on simple ical file.
+   */
+  function test() {   
+    // Create content type.
+    $typename = $this->createContentType(array(), array(
+      'alpha' => 'text',
+    ));
+
+    $this->createImporterConfiguration('iCal importer', 'ical');
+    $this->setSettings('ical', NULL, array('content_type' => '', 'import_period' => FEEDS_SCHEDULE_NEVER));
+    $this->setPlugin('ical', 'FeedsFileFetcher');
+    $this->setSettings('ical', 'FeedsFileFetcher', array('allowed_extensions' => 'ics ical'));
+    $this->configureParser();
+    $this->setSettings('ical', 'FeedsNodeProcessor', array('content_type' => $typename));
+    $this->addMappings('ical', array(
+      array(
+        'source' => 'uid',
+        'target' => 'guid',
+      ),
+      array(
+        'source' => 'summary',
+        'target' => 'title',
+      ),
+      array(
+        'source' => 'location',
+        'target' => 'field_alpha',
+      ),
+    ));
+
+    // Import iCal file
+    $this->importFile('ical', $this->absolutePath() . '/tests/feeds/location.ics');
+    $this->assertText('Created 3 nodes');
+
+    $this->drupalGet('node/1/edit');
+    $this->drupalGet('node/2/edit');
+    $this->drupalGet('node/3/edit');
+//    $this->assertRaw('http://example.com/node/2', 'Feed item 2 body correct.');
+  }
+
+  /**
+   * Set and configure the parser plugin.
+   */
+  abstract function configureParser();
+}
+
+/**
+ * Class for testing iCal (date api) link and uid mapping.
+ */
+class ParserIcalDateModuleLocationCase extends ParserIcalLocationTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Location (date api)',
+      'description' => 'Test location import support.',
+      'group' => 'Parser iCal',
+    );
+  }
+
+  public function configureParser() {
+    $this->setPlugin('ical', 'ParserIcalDateModule');
+  }
+}
+
+/**
+ * Class for testing iCal (iCalCreator) link and uid mapping.
+ */
+class ParserIcalCreatorLocationCase extends ParserIcalLocationTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Location (iCalCreator)',
+      'description' => 'Test location import support.',
+      'group' => 'Parser iCal',
+    );
+  }
+
+  public function configureParser() {
+    $this->setPlugin('ical', 'ParserIcalCreator');
+  }
+}

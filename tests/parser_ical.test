@@ -18,7 +18,7 @@ class ParserIcalFeedsTestCase extends FeedsMapperTestCase {
    */
   public function setUp() {
     $modules = func_get_args();
-    if (is_array($modules[0])) {
+    if (!empty($modules[0]) && is_array($modules[0])) {
       $modules = $modules[0];
     }
     $modules[] = 'parser_ical';
