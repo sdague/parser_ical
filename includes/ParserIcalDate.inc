@@ -45,6 +45,11 @@ class ParserIcalDateModule extends ParserIcalFeeds {
       'description' => 'URL for the feed item.',
       'parser_ical_handler' => 'formatText',
     ),
+    'location' => array(
+      'name' => 'Location text',
+      'description' => 'Text of location property of feed item.',
+      'parser_ical_handler' => 'formatText',
+    ),
   );
 
   /**

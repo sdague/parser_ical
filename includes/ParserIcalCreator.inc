@@ -44,6 +44,16 @@ class ParserIcalCreator extends ParserIcalFeeds {
       'description' => 'URL for the feed item.',
       'parser_ical_handler' => 'formatText',
     ),
+    'location' => array(
+      'name' => 'Location text',
+      'description' => 'Text of location property of feed item.',
+      'parser_ical_handler' => 'formatText',
+    ),
+    'location:altrep' => array(
+      'name' => 'Location alternate representation',
+      'description' => 'Additional location information, usually a URL to additional location information file',
+      'parser_ical_handler' => 'formatParamText',
+    ),
   );
 
   /**
@@ -125,6 +135,20 @@ class ParserIcalCreator extends ParserIcalFeeds {
   public function formatText($property_key, $property, ParserIcalComponentInterface $item, FeedsParserResult $result, FeedsSource $source) {
     $text = $property['value'];
     $text = str_replace(array("\\n", "\\N"), "\n", $text);
+    return $text;
+  }
+  
+  /**
+   * Format Text Parameter
+   *
+   * @return string.
+   */
+  public function formatParamText($property_key, $property, ParserIcalComponentInterface $item, ParserIcalResult $result, FeedsSource $source) {
+    $position = strpos($property_key, ':');
+    $key = substr($property_key, 0, $position);
+    $attribute = strtoupper(substr($property_key, ++$position));
+
+    $text = $property['params'][$attribute];
     return $text;
   }
 

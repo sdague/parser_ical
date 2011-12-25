@@ -50,9 +50,16 @@ abstract class ParserIcalFeeds extends FeedsParser {
     // Otherwise retrieve the current ParserIcalCreatorComponent 
     // from the ParserIcalResult
     if ($item = $result->currentItem()) {
+      if ($position = strpos($property_key, ':')) {
+        $key = substr($property_key, 0, $position);
+        $attribute = substr($property_key, ++$position);
+      }
+      else {
+        $key = $property_key;
+      }
       // and use listed handler to get source output
       $handler = $this::$sources[$property_key]['parser_ical_handler'];
-      $property = $item->getProperty($property_key);
+      $property = $item->getProperty($key);
       return $this->$handler($property_key, $property, $item, $result, $source);
     }
   }
