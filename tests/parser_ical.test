@@ -17,7 +17,13 @@ class ParserIcalFeedsTestCase extends FeedsMapperTestCase {
    * Set up the test.
    */
   public function setUp() {
-    parent::setUp(array('parser_ical'));
+    $modules = func_get_args();
+    if (is_array($modules[0])) {
+      $modules = $modules[0];
+    }
+    $modules[] = 'parser_ical';
+    parent::setUp($modules);
+
     // site date settings : consistent site timezone to against
     variable_set('date_default_timezone', 'Pacific/Apia');
     // and just because I'll make mistakes working with tests with the US date format

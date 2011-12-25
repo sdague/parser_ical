@@ -11,6 +11,7 @@ files[] = includes/ParserIcalDate.inc
 files[] = includes/ParserIcalCreator.inc
 files[] = tests/parser_ical.test
 files[] = tests/parser_ical_text.test
+files[] = tests/parser_ical_link.test
 files[] = tests/parser_ical_date.test
 core = 7.x
 php = 5.3
