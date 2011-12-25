@@ -34,6 +34,16 @@ class ParserIcalCreator extends ParserIcalFeeds {
       'description' => 'End time for the feed item.',
       'parser_ical_handler' => 'formatDateTime',
     ),
+    'uid' => array(
+      'name' => 'UID',
+      'description' => 'UID of feed item',
+      'parser_ical_handler' => 'formatText',
+    ),
+    'url' => array(
+      'name' => 'URL',
+      'description' => 'URL for the feed item.',
+      'parser_ical_handler' => 'formatText',
+    ),
   );
 
   /**
