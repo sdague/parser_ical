@@ -51,12 +51,10 @@ abstract class ParserIcalLinkTestCase extends ParserIcalFeedsTestCase {
     $this->assertText('Created 2 nodes');
 
     $item = db_query("SELECT * FROM {feeds_item} WHERE entity_type = 'node' AND entity_id = 1")->fetchObject();
-    debug($item);
     $this->assertEqual($item->url, 'http://example.com/node/1', 'Feed item 1 correct url');
     $this->assertEqual($item->guid, '36457EF9-C015-4DBF-91FA-057B7799FBF9', 'Feed item 1 correct uid');
 
     $item = db_query("SELECT * FROM {feeds_item} WHERE entity_type = 'node' AND entity_id = 2")->fetchObject();
-    debug($item);
     $this->assertEqual($item->url, 'http://example.com/node/2', 'Feed item 2 correct url');
     $this->assertEqual($item->guid, '36726712-0001-41F3-A733-53FE5DBCD575', 'Feed item 2 correct uid');
 
