@@ -98,10 +98,10 @@ class ParserIcalDateModule extends ParserIcalFeeds {
   /**
    * Format text fields.
    */
-  public function formatText($property_key, $property, ParserIcalComponentInterface $item, FeedsParserResult $result, FeedsSource $source) {
+   public function formatText($property_key, $property, ParserIcalComponentInterface $item, FeedsParserResult $result, FeedsSource $source) {
     return $property;
   }
- 
+
   /**
    * Load external iCalcreator class from libary.
    */

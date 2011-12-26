@@ -14,5 +14,6 @@ files[] = tests/parser_ical_text.test
 files[] = tests/parser_ical_link.test
 files[] = tests/parser_ical_date.test
 files[] = tests/parser_ical_location.test
+files[] = tests/parser_ical_categories.test
 core = 7.x
 php = 5.3

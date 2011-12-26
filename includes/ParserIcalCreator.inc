@@ -54,6 +54,11 @@ class ParserIcalCreator extends ParserIcalFeeds {
       'description' => 'Additional location information, usually a URL to additional location information file',
       'parser_ical_handler' => 'formatParamText',
     ),
+    'categories' => array(
+      'name' => 'Categories',
+      'description' => 'Catagories of the feed item.',
+      'parser_ical_handler' => 'formatCategories',
+    ),
   );
 
   /**
@@ -227,6 +232,22 @@ class ParserIcalCreator extends ParserIcalFeeds {
     }
 
     return $feeds_object;
+  }
+
+  /**
+   * Format Categories
+   *
+   * @return array of free tags strings.
+   */
+  public function formatCategories($property_key, $property, ParserIcalComponentInterface $item, ParserIcalResult $result, FeedsSource $source) {
+    if (! empty($property['value'])) {
+      if (is_array($property['value'])) {
+        return $property['value'];
+      }
+      else {
+        return array($property['value']);
+      }
+    }
   }
 
   /**
