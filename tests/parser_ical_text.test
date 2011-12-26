@@ -40,12 +40,14 @@ abstract class ParserIcalTextTestCase extends ParserIcalFeedsTestCase {
     $this->assertText('Created 2 nodes');
    
     $this->drupalGet('node/1/edit');
-    $this->assertText('Only a short title (with no DESCRIPTION)', 'Feed item 1 title correct.');
+    $this->assertFieldByName('title', 'Only a short title (with no DESCRIPTION)', 'Feed item 1 title correct.');
 
     $this->drupalGet('node/2/edit');
-    $this->assertText('This has a long description wrapped and escaped', 'Feed item 2 title correct.');
-    $body = "Oct. 26, 12:52 a.m. EDT - The Full Hunter&#039;s Moon. With theleaves falling and the deer fattened, it is time to hunt. Since the fields have been reaped, hunters can ride over the stubble, and can moreeasily see the fox, also other animals that have come out to glean andcan be caught for a thanksgiving banquet after the harvest. The Moon will also be at perigee later this day, at 7:00 a.m., at a distance of 221,676 miles from Earth. Very high tides can be expected from the coincidence of perigee with full Moon.\n\nhttp://www.space.com/spacewatch/061229_moonnames2007.html";
-    $this->assertText($body, 'Feed item 2 body correct.');
+    $this->assertFieldByName('title', 'This has a long description wrapped and escaped', 'Feed item 2 title correct.');
+    $body = "Oct. 26, 12:52 a.m. EDT - The Full Hunter's Moon. With theleaves falling and the deer fattened, it is time to hunt. Since the fields have been reaped, hunters can ride over the stubble, and can moreeasily see the fox, also other animals that have come out to glean andcan be caught for a thanksgiving banquet after the harvest. The Moon will also be at perigee later this day, at 7:00 a.m., at a distance of 221,676 miles from Earth. Very high tides can be expected from the coincidence of perigee with full Moon.
+
+http://www.space.com/spacewatch/061229_moonnames2007.html";
+    $this->assertFieldByName('body[und][0][value]', $body, 'Feed item 2 body correct.');
   }
 
   /**

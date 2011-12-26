@@ -8,15 +8,7 @@
 /**
  * Class for testing Feeds <em>content</em> mapper.
  */
-class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
-  public static function getInfo() {
-    return array(
-      'name' => 'Basic date handling',
-      'description' => 'Date import support.',
-      'group' => 'Parser iCal',
-    );
-  } 
-
+abstract class ParserIcalDateTestCase extends ParserIcalFeedsTestCase {
   /**
    * Basic test.
    *
@@ -53,7 +45,7 @@ class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
     $this->setSettings('ical', NULL, array('import_period' => FEEDS_SCHEDULE_NEVER));
     $this->setPlugin('ical', 'FeedsFileFetcher');
     $this->setSettings('ical', 'FeedsFileFetcher', array('allowed_extensions' => 'ics ical'));
-    $this->setPlugin('ical', 'ParserIcalCreator');
+    $this->configureParser();
     $this->setSettings('ical', 'FeedsNodeProcessor', array('content_type' => $typename));
     $mappings = array(
       array('source' => 'summary', 'target' => 'title', ),
@@ -278,4 +270,22 @@ class ParserIcalCreatorDateCase extends ParserIcalFeedsTestCase {
     }
   }
 
+  /**
+   * Set and configure the parser plugin.
+   */
+  abstract function configureParser();
+}
+
+class ParserIcalCreatorDateTestCase extends ParserIcalDateTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Basic date handling (iCalCreator)',
+      'description' => 'Date import support.',
+      'group' => 'Parser iCal',
+    );
+  }
+
+  public function configureParser() {
+    $this->setPlugin('ical', 'ParserIcalCreator');
+  }
 }

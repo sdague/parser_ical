@@ -59,7 +59,7 @@ abstract class ParserIcalLinkTestCase extends ParserIcalFeedsTestCase {
     $this->assertEqual($item->guid, '36726712-0001-41F3-A733-53FE5DBCD575', 'Feed item 2 correct uid');
 
     $this->drupalGet('node/2/edit');
-    $this->assertRaw('http://example.com/node/2', 'Feed item 2 body correct.');
+    $this->assertFieldByName('field_alpha[und][0][url]', 'http://example.com/node/2', 'Feed item 2 correct url field value');
   }
 
   /**
