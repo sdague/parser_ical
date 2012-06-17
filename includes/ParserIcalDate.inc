@@ -26,15 +26,15 @@ class ParserIcalDateModule extends ParserIcalFeeds {
       'parser_ical_handler' => 'formatText',
     ),
     'dtstart' => array(
-      'name' => 'Date start',
+      'name' => 'Date for feed item',
       'description' => 'Start time for the feed item.',
       'parser_ical_handler' => 'formatDateTime',
     ),
-    'dtend' => array(
+    /*    'dtend' => array(
       'name' => 'Date end',
       'description' => 'End time for the feed item.',
       'parser_ical_handler' => 'formatDateTime',
-    ),
+      ), */
     'uid' => array(
       'name' => 'UID',
       'description' => 'UID of feed item',
@@ -91,7 +91,7 @@ class ParserIcalDateModule extends ParserIcalFeeds {
 
   /******
    * Source output formatters.
-   * 
+   *
    * Could be in a class of their own?
    **/
 
@@ -100,6 +100,29 @@ class ParserIcalDateModule extends ParserIcalFeeds {
    */
    public function formatText($property_key, $property, ParserIcalComponentInterface $item, FeedsParserResult $result, FeedsSource $source) {
     return $property;
+  }
+
+  /**
+   * Format datetime fields.
+   */
+   public function formatDateTime($property_key, $property, ParserIcalComponentInterface $item, FeedsParserResult $result, FeedsSource $source) {
+     $dtstart = $item->getProperty("dtstart");
+     $dtend = $item->getProperty("dtend");
+     # drupal_set_message(print_r($dtstart, TRUE));
+
+     $dstart = new FeedsDateTime($dtstart["datetime"]);
+     $dend = new FeedsDateTime($dtend["datetime"]);
+
+     $dt = new FeedsDateTimeElement(
+       $dstart,
+       $dend,
+       $dtstart["tz"]
+     );
+
+     # drupal_set_message(print_r($property_key, TRUE));
+     # drupal_set_message(print_r($dt, TRUE));
+     # drupal_set_message("<pre>" . print_r($item, TRUE) . "</pre>");
+     return $dt;
   }
 
   /**
@@ -138,5 +161,5 @@ class ParserIcalDateModuleComponent implements ParserIcalComponentInterface {
   public function setProperty($name, $value) {
     $name = strtoupper($name);
     $this->component[$name] = $value;
-  }  
+  }
 }
